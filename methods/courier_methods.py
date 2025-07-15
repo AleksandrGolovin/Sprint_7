@@ -8,7 +8,7 @@ class CourierMethods:
     def create_courier(self, params):
         response = requests.post(
             url=self.namespace_url,
-            data=params
+            json=params
         )
         return response
 
@@ -16,14 +16,14 @@ class CourierMethods:
         id = params.get('id', '')
         response = requests.delete(
             url=f'{self.namespace_url}/{id}',
-            data=params
+            json=params
         )
         return response
     
     def login_courier(self, params):
         response = requests.post(
             url=f'{self.namespace_url}/login',
-            data=params,
+            json=params,
             timeout=10
         )
         return response

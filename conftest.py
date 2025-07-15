@@ -1,8 +1,15 @@
 import pytest
 import helpers
 from methods.courier_methods import CourierMethods
-from data import BASE_URL, COURIER_URL
+from methods.orders_methods import OrdersMethods
+from data import BASE_URL, COURIER_URL, ORDERS_URL
 
+
+@pytest.fixture
+def orders_methods() -> OrdersMethods:
+    orders_namespace_url = f'{BASE_URL}{ORDERS_URL}'
+    orders_methods = OrdersMethods(orders_namespace_url)
+    return orders_methods
 
 @pytest.fixture
 def courier_methods() -> CourierMethods:
