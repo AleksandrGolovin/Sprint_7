@@ -1,0 +1,38 @@
+from methods.courier_methods import CourierMethods
+import helpers
+
+
+class TestDeleteCourier:
+    # Удалить курьера с валидными учетными данными - 200 (ok) + ok message
+    def test_delete_courier_valid_credentials_ok(self, courier_methods: CourierMethods):
+        create_params = helpers.generate_courier_data()
+        create_response = courier_methods.create_courier(create_params)
+        login_params = {
+            "login": create_params['login'],
+            "password": create_params['password']
+        }
+        login_response = courier_methods.login_courier(login_params)
+        delete_params = {"id": login_response.json()['id']}
+
+        delete_response = courier_methods.delete_courier(delete_params)
+
+        assert delete_response.status_code == 200 and delete_response.text == '{"ok":true}'
+
+    # Удалить курьера без указания id - 404 (not found) + error message
+    # Расходится с документацией
+    def test_delete_courier_empty_id_bad_reques(self, courier_methods: CourierMethods):
+        delete_params = {}
+        error_message = 'Not Found.'
+
+        delete_response = courier_methods.delete_courier(delete_params)
+
+        assert delete_response.status_code == 404 and delete_response.json()['message'] == error_message
+    
+    # Удалить курьера с неверным id - 404 (not found) + error message
+    def test_delete_courier_wrong_id_bad_reques(self, courier_methods: CourierMethods):
+        delete_params = {'id': -1010101010}
+        error_message = 'Курьера с таким id нет.'
+
+        delete_response = courier_methods.delete_courier(delete_params)
+
+        assert delete_response.status_code == 404 and delete_response.json()['message'] == error_message
