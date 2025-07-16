@@ -1,11 +1,13 @@
 import pytest
+import allure
 from methods.orders_methods import OrdersMethods
 from data import VALID_ORDER_DATA
-import helpers
 
 
+@allure.title('Тесты создания заказов')
 class TestCreateOrder:
-    # Создание заказа с разными цветами самокатов - 201 (created) + ok message
+    @allure.title('Создание заказа с разными цветами самокатов - 201 (created) + track id')
+    @allure.description('Через параметризацию дополнить данные заказа, отправить запрос на создание заказа, проверить код ответа и присвоение номера заказа')
     @pytest.mark.parametrize("scooter_color", 
         [
             ["BLACK"],
